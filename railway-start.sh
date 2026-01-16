@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+echo "PORT=$PORT"
+
 superset db upgrade
 superset fab create-admin \
   --username admin \
