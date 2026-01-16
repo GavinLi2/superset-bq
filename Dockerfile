@@ -1,3 +1,5 @@
+ARG CACHE_BUST=1
+
 FROM apache/superset:latest
 
 USER root
