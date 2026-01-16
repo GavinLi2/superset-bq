@@ -1,2 +1,1 @@
-sqlalchemy-bigquery
-pybigquery
+apache-superset[bigquery]
