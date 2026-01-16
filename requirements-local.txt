@@ -1,0 +1,2 @@
+sqlalchemy-bigquery
+pybigquery
