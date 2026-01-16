@@ -10,4 +10,4 @@ superset fab create-admin \
   --password "$ADMIN_PASSWORD" || true
 superset init
 
-gunicorn --bind 0.0.0.0:8088 "superset.app:create_app()"
+gunicorn --bind 0.0.0.0:${PORT:-8088} "superset.app:create_app()"
