@@ -1,19 +1,12 @@
 FROM apache/superset:latest
 
 USER root
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# 安装 BigQuery 相关依赖
-RUN pip install --no-cache-dir \
-  "apache-superset[bigquery]" \
-  pybigquery \
-  google-cloud-bigquery \
-  google-auth \
-  pydata-google-auth
+# BigQuery dialect（官方文档推荐）
+RUN pip install --no-cache-dir sqlalchemy-bigquery
 
-# 复制启动脚本
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# 可选：如果你要支持“上传 CSV/Excel 到 BigQuery”
+# RUN pip install --no-cache-dir pandas_gbq
 
 USER superset
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
