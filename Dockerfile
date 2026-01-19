@@ -1,12 +1,9 @@
-FROM apache/superset:3.1.0
+FROM apache/superset:latest
 
-USER root
+# 安装 BigQuery SQLAlchemy 驱动（官方推荐）
+RUN pip install --no-cache-dir sqlalchemy-bigquery
 
-COPY requirements-local.txt /app/requirements-local.txt
-COPY railway-start.sh /app/railway-start.sh
+# （可选）如果你要用 service account JSON 文件方式鉴权，通常不需要额外装包
+# google-auth 在依赖链里一般会带上；缺啥再补 pip install
 
-RUN /app/python3/bin/pip install --no-cache-dir --upgrade pip \
- && /app/python3/bin/pip install --no-cache-dir --upgrade -r /app/requirements-local.txt \
- && chmod +x /app/railway-start.sh
-
-USER superset
+ENV SUPERSET_ENV=production
