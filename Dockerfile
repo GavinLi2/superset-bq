@@ -1,9 +1,19 @@
 FROM apache/superset:latest
 
-# 安装 BigQuery SQLAlchemy 驱动（官方推荐）
-RUN pip install --no-cache-dir sqlalchemy-bigquery
+USER root
 
-# （可选）如果你要用 service account JSON 文件方式鉴权，通常不需要额外装包
-# google-auth 在依赖链里一般会带上；缺啥再补 pip install
+# 安装 BigQuery 相关依赖
+RUN pip install --no-cache-dir \
+  "apache-superset[bigquery]" \
+  pybigquery \
+  google-cloud-bigquery \
+  google-auth \
+  pydata-google-auth
 
-ENV SUPERSET_ENV=production
+# 复制启动脚本
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+USER superset
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
